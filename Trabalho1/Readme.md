@@ -1,7 +1,26 @@
+Turma A.
+Integrantes:
+Angelo Fernandes Oliveira 00550162
+Augusto Mattei Grohmann   00550429
+Nathan Mattes             00342941
+
 Parte 1. Regressão Linear:
+Valores iniciais:
+B = 1
+W = 0.7
+Alpha = 0.01 
+num_iterations = 1000
 
+Melhor erro quadrático:
+8.530450981023511
 
+Durante a execução do trabalho pode-se verificar que ao usar alpha igual a 0.1 o erro quadrático estava extremamente grande. Ele o afetava tanto que mesmo alterandos os demais parâmetros não se conseguia uma alteração grande do erro. Alterando alpha para 0.01 foi possível obter um erro melhor que não foi superado por alpha igual 0.001.
 
+Utilizando inicialmente os valores de B e W ambos em 0 obtinha-se um gráfico muito disnívelado, alterando-os experimentalmente chegamos aos valores de b = 1 e w = 0.7, que resultam em um gráfico mais suave. Isso, agregado ao aumento de iterações para 1000, resulta no gráfico suave e com o melhor erro encontrado pelo grupo.
+
+Fontes:
+Slides da aula
+Ferramenta ChatGPT (pouco útil)
 
 Parte 2. Tensorflow/Keras:
 1) MNIST é o mais fácil de todos, pois as imagens são simples, sem muita variação entre a mesma classe, em tons de cinza e tamanho não muito grande, e com fundo uniforme.
