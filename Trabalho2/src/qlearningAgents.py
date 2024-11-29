@@ -18,36 +18,6 @@ from featureExtractors import *
 
 import random,util,math
 
-"""class States:
-    def __init__(self, state, StateActions):
-        self.state = state
-        self.StateActions = StateActions
-
-    def get_state(self):
-        return self.state
-    
-    def get_stateAction(self,action)
-        return  
-
-class StateActions:
-    def __init__(self, north, west, south, east):
-        self.north = north
-        self.west = west
-        self.south = south
-        self.east = east
-
-    def get_north(self):
-        return self.north
-    
-    def get_west(self):
-        return self.west
-    
-    def get_south(self):
-        return self.south
-    
-    def get_east(self):
-        return self.east
-"""
 class QLearningAgent(ReinforcementAgent):
     """
       Q-Learning Agent
