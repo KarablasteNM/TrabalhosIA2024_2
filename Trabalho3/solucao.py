@@ -4,7 +4,7 @@ class Nodo:
     """
     Implemente a classe Nodo com os atributos descritos na funcao init
     """
-    def __init__(self, estado:str, pai:Nodo, acao:str, custo:int):
+    def __init__(self, estado:str, pai, acao:str, custo:int):
         """
         Inicializa o nodo com os atributos recebidos
         :param estado:str, representacao do estado do 8-puzzle
@@ -17,7 +17,6 @@ class Nodo:
         self.pai = pai
         self.acao = acao
         self.custo = custo
-        
 
 def calc_acao(estado:str, indice:int, acao:str)->Tuple[str,str]:
     match acao:
@@ -29,10 +28,14 @@ def calc_acao(estado:str, indice:int, acao:str)->Tuple[str,str]:
             mod = -1
         case "direita":
             mod = 1
-    num_troca = estado[indice + mod]
-    estado = estado.replace(estado[indice + mod],'_')
-    estado = estado.replace(estado[indice],num_troca)
-    return [acao,estado]
+        case _:
+            raise ValueError(f"Acao invalida: {acao}")
+    estado_list = list(estado)
+    num_troca = estado_list[indice + mod]
+    estado_list[indice + mod] = '_'
+    estado_list[indice] = num_troca
+    novo_estado = ''.join(estado_list)
+    return (acao,novo_estado)
 
 def sucessor(estado:str)->Set[Tuple[str,str]]:
     """
@@ -43,51 +46,19 @@ def sucessor(estado:str)->Set[Tuple[str,str]]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    list_acoes = []
-    indice = 1
-    for i in estado:
-        if i == '_':
-            break
-        else:
-            indice += 1
-    
-    match indice:
-        case 1:
-            list_acoes.append(calc_acao(estado,indice,"direita"))
-            list_acoes.append(calc_acao(estado,indice,"abaixo"))
-        case 2:
-            list_acoes.append(calc_acao(estado,indice,"direita"))
-            list_acoes.append(calc_acao(estado,indice,"abaixo"))
-            list_acoes.append(calc_acao(estado,indice,"esquerda"))
-        case 3:
-            list_acoes.append(calc_acao(estado,indice,"esquerda"))
-            list_acoes.append(calc_acao(estado,indice,"abaixo"))
-        case 4:
-            list_acoes.append(calc_acao(estado,indice,"direita"))
-            list_acoes.append(calc_acao(estado,indice,"abaixo"))
-            list_acoes.append(calc_acao(estado,indice,"acima"))
-        case 5:
-            list_acoes.append(calc_acao(estado,indice,"direita"))
-            list_acoes.append(calc_acao(estado,indice,"abaixo"))
-            list_acoes.append(calc_acao(estado,indice,"esquerda"))
-            list_acoes.append(calc_acao(estado,indice,"acima"))
-        case 6:
-            list_acoes.append(calc_acao(estado,indice,"esquerda"))
-            list_acoes.append(calc_acao(estado,indice,"abaixo"))
-            list_acoes.append(calc_acao(estado,indice,"acima"))
-        case 7:
-            list_acoes.append(calc_acao(estado,indice,"direita"))
-            list_acoes.append(calc_acao(estado,indice,"acima"))
-        case 8:
-            list_acoes.append(calc_acao(estado,indice,"esquerda"))
-            list_acoes.append(calc_acao(estado,indice,"direita"))
-            list_acoes.append(calc_acao(estado,indice,"acima"))
-        case 9:
-            list_acoes.append(calc_acao(estado,indice,"esquerda"))
-            list_acoes.append(calc_acao(estado,indice,"acima"))
-    return list_acoes     
-    #raise NotImplementedError
+    acoes_set = set()
 
+    indice = estado.index('_')
+    
+    if indice > 2:
+        acoes_set.add(calc_acao(estado,indice,"acima"))
+    if indice < 6:
+        acoes_set.add(calc_acao(estado,indice,"abaixo"))
+    if indice % 3 > 0:
+        acoes_set.add(calc_acao(estado,indice,"esquerda"))
+    if indice % 3 < 2:
+        acoes_set.add(calc_acao(estado,indice,"direita"))
+    return acoes_set
 
 def expande(nodo:Nodo)->Set[Nodo]:
     """
@@ -96,9 +67,12 @@ def expande(nodo:Nodo)->Set[Nodo]:
     :param nodo: objeto da classe Nodo
     :return:
     """
+    nodos = set()
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
-
+    sucessores = sucessor(nodo.estado)
+    for suc in sucessores:
+        nodos.add(Nodo(suc[1], nodo, suc[0], nodo.custo + 1))
+    return nodos
 
 def astar_hamming(estado:str)->list[str]:
     """
