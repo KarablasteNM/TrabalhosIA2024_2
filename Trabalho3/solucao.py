@@ -1,4 +1,7 @@
 from typing import Iterable, Set, Tuple
+from heapq import heappush, heappop
+
+OBJECTIVE = "12345678_"
 
 class Nodo:
     """
@@ -12,12 +15,20 @@ class Nodo:
         :param acao:str, acao a partir do pai que leva a este nodo (None no caso do nó raiz)
         :param custo:int, custo do caminho da raiz até este nó
         """
-        # substitua a linha abaixo pelo seu codigo
         self.estado = estado
         self.pai = pai
         self.acao = acao
         self.custo = custo
 
+    def __lt__(self, other):
+        return self.custo < other.custo
+    
+    def __eq__(self, other):
+        return isinstance(other, Nodo) and self.estado == other.estado
+    
+    def __hash__(self):
+        return hash(self.estado)
+    
 def calc_acao(estado:str, indice:int, acao:str)->Tuple[str,str]:
     match acao:
         case "acima":
@@ -83,9 +94,35 @@ def astar_hamming(estado:str)->list[str]:
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    X = set()
+    F = []
+    heappush(F, (0, Nodo(estado, None, None, 0)))
 
+    while F:
+        _, v = heappop(F)
+        if v.estado == OBJECTIVE:
+            sequencia = []
+            nodo = v
+            while nodo is not None:
+                if nodo.acao is not None:
+                    sequencia.insert(0, nodo.acao)
+                nodo = nodo.pai
+            return sequencia
+        
+        if v.estado not in X:
+            X.add(v.estado)
+            for nodo in expande(v):
+                if nodo not in X:
+                    heappush(F, (nodo.custo + hamming_distance(nodo.estado, OBJECTIVE), nodo))
+    return None
+
+def hamming_distance(string1, string2): 
+    distance = 0
+    L = len(string1)
+    for i in range(L):
+        if string1[i] != string2[i] and string1[i] != "_":
+            distance += 1
+    return distance
 
 def astar_manhattan(estado:str)->list[str]:
     """
@@ -96,8 +133,39 @@ def astar_manhattan(estado:str)->list[str]:
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    X = set()
+    F = []
+    heappush(F, (0, Nodo(estado, None, None, 0)))
+
+    while F:
+        _, v = heappop(F)
+        if v.estado == OBJECTIVE:
+            sequencia = []
+            nodo = v
+            while nodo is not None:
+                if nodo.acao is not None:
+                    sequencia.insert(0, nodo.acao)
+                nodo = nodo.pai
+            return sequencia
+        
+        if v.estado not in X:
+            X.add(v.estado)
+            for nodo in expande(v):
+                if nodo not in X:
+                    heappush(F, (nodo.custo + manhattan_distance(nodo.estado, OBJECTIVE), nodo))
+    return None
+
+def manhattan_distance(string1, string2, grid_size = 3): 
+    distance = 0
+    L = len(string1)
+    for i in range(L):
+        char = string1[i]
+        if char != '_':
+            matching_pos = string2.index(char)
+            x1,y1 = divmod(i, grid_size)
+            x2,y2 = divmod(matching_pos, grid_size)
+            distance += abs(x1 - x2) + abs(y1 - y2)
+    return distance
 
 #opcional,extra
 def bfs(estado:str)->list[str]:
