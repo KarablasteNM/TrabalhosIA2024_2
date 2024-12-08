@@ -80,6 +80,30 @@ class TestaSolucao(unittest.TestCase):
         # nao ha solucao a partir do estado 185423_67
         self.assertIsNone(self.run_algorithm(solucao.astar_manhattan, "185423_67"))
     
+    def test_run_bfs(self):
+
+        # no estado 2_3541687, a solucao otima tem 23 movimentos.
+        self.assertEqual(23, len(self.run_algorithm(solucao.bfs, "2_3541687")))
+
+        # nao ha solucao a partir do estado 185423_67
+        self.assertIsNone(self.run_algorithm(solucao.bfs, "185423_67"))
+
+
+    def test_run_dfs(self):
+
+        # nao ha solucao a partir do estado 185423_67
+        self.assertIsNone(self.run_algorithm(solucao.dfs, "185423_67"))
+
+
+    def test_run_astar_new_heuristic(self):
+
+        # no estado 2_3541687, a solucao otima tem 23 movimentos.
+        self.assertEqual(23, len(self.run_algorithm(solucao.astar_new_heuristic, "2_3541687")))
+
+        # nao ha solucao a partir do estado 185423_67
+        self.assertIsNone(self.run_algorithm(solucao.astar_new_heuristic, "185423_67"))
+
+
     def test_action_order(self):
         """
         Testa se A* retornam a sequencia de acoes na ordem correta
@@ -87,7 +111,7 @@ class TestaSolucao(unittest.TestCase):
         estado = "1235_6478"
         solucao_otima = ['esquerda', 'abaixo', 'direita', 'direita']
 
-        for alg in [solucao.astar_hamming, solucao.astar_manhattan]:
+        for alg in [solucao.astar_hamming, solucao.astar_manhattan, solucao.astar_new_heuristic]:
             self.assertEqual(solucao_otima, self.run_algorithm(alg, estado))
 
 if __name__ == '__main__':
