@@ -1,5 +1,6 @@
 from typing import Iterable, Set, Tuple
 from heapq import heappush, heappop
+from collections import deque 
 
 OBJECTIVE = "12345678_"
 
@@ -177,7 +178,30 @@ def bfs(estado:str)->list[str]:
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
+    
+    X = set()
+    F = deque()
+    F.append(Nodo(estado, None, None, 0))
+
+    while F:
+        v = F.popleft()
+        if v.estado == OBJECTIVE:
+            sequencia = []
+            nodo = v
+            while nodo is not None:
+                if nodo.acao is not None:
+                    sequencia.insert(0, nodo.acao)
+                nodo = nodo.pai
+            return sequencia
+        
+        if v.estado not in X:
+            X.add(v.estado)
+            for nodo in expande(v):
+                if nodo not in X:
+                    F.append(nodo)
+    return None
+    
+
     raise NotImplementedError
 
 #opcional,extra
@@ -190,7 +214,33 @@ def dfs(estado:str)->list[str]:
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
+    #F é uma pilha!
+
+    X = set()
+    F = []
+    F.append(Nodo(estado, None, None, 0))
+
+    while F:
+        v = F.pop()
+        if v.estado == OBJECTIVE:
+            sequencia = []
+            nodo = v
+            while nodo is not None:
+                if nodo.acao is not None:
+                    sequencia.insert(0, nodo.acao)
+                nodo = nodo.pai
+            return sequencia
+        
+        if v.estado not in X:
+            X.add(v.estado)
+            for nodo in expande(v):
+                if nodo not in X:
+                    F.append(nodo)
+    
+
+    return None
+
+
     raise NotImplementedError
 
 #opcional,extra
@@ -203,5 +253,30 @@ def astar_new_heuristic(estado:str)->list[str]:
     :param estado: str
     :return:
     """
-    # substituir a linha abaixo pelo seu codigo
+   
+    X = set()
+    F = []
+    heappush(F, (0, Nodo(estado, None, None, 0)))
+
+    new_heuristic = lambda x, y: manhattan_distance(x, y) + hamming_distance(x, y)
+
+    while F:
+        _, v = heappop(F)
+        if v.estado == OBJECTIVE:
+            sequencia = []
+            nodo = v
+            while nodo is not None:
+                if nodo.acao is not None:
+                    sequencia.insert(0, nodo.acao)
+                nodo = nodo.pai
+            return sequencia
+        
+        if v.estado not in X:
+            X.add(v.estado)
+            for nodo in expande(v):
+                if nodo not in X:
+                    heappush(F, (nodo.custo + new_heuristic(nodo.estado, OBJECTIVE), nodo))
+   
+    return None
+
     raise NotImplementedError
