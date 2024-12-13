@@ -1,6 +1,6 @@
 from typing import Iterable, Set, Tuple
 from heapq import heappush, heappop
-from collections import deque 
+from collections import deque #opcional,extra (BFS)
 
 OBJECTIVE = "12345678_"
 
@@ -98,6 +98,7 @@ def astar_hamming(estado:str)->list[str]:
     X = set()
     F = []
     heappush(F, (0, Nodo(estado, None, None, 0)))
+    nos_expandidos = 0
 
     while F:
         _, v = heappop(F)
@@ -108,14 +109,15 @@ def astar_hamming(estado:str)->list[str]:
                 if nodo.acao is not None:
                     sequencia.insert(0, nodo.acao)
                 nodo = nodo.pai
-            return sequencia
+            return sequencia#, nos_expandidos
         
         if v.estado not in X:
             X.add(v.estado)
+            nos_expandidos += 1
             for nodo in expande(v):
                 if nodo not in X:
                     heappush(F, (nodo.custo + hamming_distance(nodo.estado, OBJECTIVE), nodo))
-    return None
+    return None#, nos_expandidos
 
 def hamming_distance(string1, string2): 
     distance = 0
@@ -137,6 +139,7 @@ def astar_manhattan(estado:str)->list[str]:
     X = set()
     F = []
     heappush(F, (0, Nodo(estado, None, None, 0)))
+    nos_expandidos = 0
 
     while F:
         _, v = heappop(F)
@@ -147,14 +150,15 @@ def astar_manhattan(estado:str)->list[str]:
                 if nodo.acao is not None:
                     sequencia.insert(0, nodo.acao)
                 nodo = nodo.pai
-            return sequencia
+            return sequencia#, nos_expandidos
         
         if v.estado not in X:
             X.add(v.estado)
+            nos_expandidos += 1
             for nodo in expande(v):
                 if nodo not in X:
                     heappush(F, (nodo.custo + manhattan_distance(nodo.estado, OBJECTIVE), nodo))
-    return None
+    return None#, nos_expandidos
 
 def manhattan_distance(string1, string2, grid_size = 3): 
     distance = 0
@@ -182,6 +186,7 @@ def bfs(estado:str)->list[str]:
     X = set()
     F = deque()
     F.append(Nodo(estado, None, None, 0))
+    nos_expandidos = 0
 
     while F:
         v = F.popleft()
@@ -192,14 +197,15 @@ def bfs(estado:str)->list[str]:
                 if nodo.acao is not None:
                     sequencia.insert(0, nodo.acao)
                 nodo = nodo.pai
-            return sequencia
+            return sequencia#, nos_expandidos
         
         if v.estado not in X:
             X.add(v.estado)
+            nos_expandidos += 1
             for nodo in expande(v):
                 if nodo not in X:
                     F.append(nodo)
-    return None
+    return None#, nos_expandidos
     
 
     raise NotImplementedError
@@ -219,6 +225,7 @@ def dfs(estado:str)->list[str]:
     X = set()
     F = []
     F.append(Nodo(estado, None, None, 0))
+    nos_expandidos = 0
 
     while F:
         v = F.pop()
@@ -229,16 +236,17 @@ def dfs(estado:str)->list[str]:
                 if nodo.acao is not None:
                     sequencia.insert(0, nodo.acao)
                 nodo = nodo.pai
-            return sequencia
+            return sequencia#, nos_expandidos
         
         if v.estado not in X:
             X.add(v.estado)
+            nos_expandidos += 1
             for nodo in expande(v):
                 if nodo not in X:
                     F.append(nodo)
     
 
-    return None
+    return None#, nos_expandidos
 
 
     raise NotImplementedError
@@ -257,6 +265,7 @@ def astar_new_heuristic(estado:str)->list[str]:
     X = set()
     F = []
     heappush(F, (0, Nodo(estado, None, None, 0)))
+    nos_expandidos = 0
 
     new_heuristic = lambda x, y: manhattan_distance(x, y) + hamming_distance(x, y)
 
@@ -269,14 +278,15 @@ def astar_new_heuristic(estado:str)->list[str]:
                 if nodo.acao is not None:
                     sequencia.insert(0, nodo.acao)
                 nodo = nodo.pai
-            return sequencia
+            return sequencia#, nos_expandidos
         
         if v.estado not in X:
             X.add(v.estado)
+            nos_expandidos += 1
             for nodo in expande(v):
                 if nodo not in X:
                     heappush(F, (nodo.custo + new_heuristic(nodo.estado, OBJECTIVE), nodo))
    
-    return None
+    return None#, nos_expandidos
 
     raise NotImplementedError
