@@ -1,6 +1,7 @@
 import unittest
 import timer
 import solucao as solucao
+import time
 
 
 class TestaSolucao(unittest.TestCase):
@@ -61,8 +62,20 @@ class TestaSolucao(unittest.TestCase):
         numero correto de elementos. O teste nao checa se as acoes levam para a solucao!
         :return:
         """
+        start_time = time.time()
+
+        sequence = self.run_algorithm(solucao.astar_hamming, "2_3541687")
+        #sequence, nos_expandidos = self.run_algorithm(solucao.astar_hamming, "2_3541687")
+
+        elapsed_time = time.time() - start_time
+
+        print(f"Tempo de execução A* hamming: {elapsed_time} segundos")
+
         # no estado 2_3541687, a solucao otima tem 23 movimentos.
-        self.assertEqual(23, len(self.run_algorithm(solucao.astar_hamming, "2_3541687")))
+        self.assertEqual(23, len(sequence))
+
+        #checa valores de nos expandidos
+        #self.assertEqual(23, nos_expandidos)
 
         # nao ha solucao a partir do estado 185423_67
         self.assertIsNone(self.run_algorithm(solucao.astar_hamming, "185423_67"))
@@ -74,16 +87,42 @@ class TestaSolucao(unittest.TestCase):
         numero correto de elementos. O teste nao checa se as acoes levam para a solucao!
         :return:
         """
+
+        start_time = time.time()
+
+        sequence = self.run_algorithm(solucao.astar_manhattan, "2_3541687")
+        #sequence, nos_expandidos = self.run_algorithm(solucao.astar_manhattan, "2_3541687")
+
+        elapsed_time = time.time() - start_time
+
+        print(f"Tempo de execução A* manhattan: {elapsed_time} segundos")
+
         # no estado 2_3541687, a solucao otima tem 23 movimentos.
-        self.assertEqual(23, len(self.run_algorithm(solucao.astar_manhattan, "2_3541687")))
+        self.assertEqual(23, len(sequence))
+
+        #checa valores de nos expandidos
+        #self.assertEqual(23, nos_expandidos)
 
         # nao ha solucao a partir do estado 185423_67
         self.assertIsNone(self.run_algorithm(solucao.astar_manhattan, "185423_67"))
     
     def test_run_bfs(self):
 
+
+        start_time = time.time()
+
+        sequence = self.run_algorithm(solucao.bfs, "2_3541687")
+        #sequence, nos_expandidos = self.run_algorithm(solucao.bfs, "2_3541687")
+
+        elapsed_time = time.time() - start_time
+
+        print(f"Tempo de execução BFS: {elapsed_time} segundos")
+
         # no estado 2_3541687, a solucao otima tem 23 movimentos.
-        self.assertEqual(23, len(self.run_algorithm(solucao.bfs, "2_3541687")))
+        self.assertEqual(23, len(sequence))
+
+        #checa valores de nos expandidos
+        #self.assertEqual(23, nos_expandidos)
 
         # nao ha solucao a partir do estado 185423_67
         self.assertIsNone(self.run_algorithm(solucao.bfs, "185423_67"))
@@ -91,14 +130,41 @@ class TestaSolucao(unittest.TestCase):
 
     def test_run_dfs(self):
 
+        start_time = time.time()
+
+        sequence = self.run_algorithm(solucao.dfs, "2_3541687")
+        #sequence, nos_expandidos = self.run_algorithm(solucao.dfs, "2_3541687")
+
+        elapsed_time = time.time() - start_time
+
+        print(f"Tempo de execução DFS: {elapsed_time} segundos")
+
+        #PEGA VALOR DO CUSTO DE DFS (errado)
+        #self.assertEqual(23, len(sequence))
+
+        #checa valores de nos expandidos
+        #self.assertEqual(23, nos_expandidos)
+
         # nao ha solucao a partir do estado 185423_67
         self.assertIsNone(self.run_algorithm(solucao.dfs, "185423_67"))
 
 
     def test_run_astar_new_heuristic(self):
 
+        start_time = time.time()
+
+        sequence = self.run_algorithm(solucao.astar_new_heuristic, "2_3541687")
+        #sequence, nos_expandidos = self.run_algorithm(solucao.astar_new_heuristic, "2_3541687")
+
+        elapsed_time = time.time() - start_time
+
+        print(f"Tempo de execução A* com nova heuristica: {elapsed_time} segundos")
+
         # no estado 2_3541687, a solucao otima tem 23 movimentos.
-        self.assertEqual(23, len(self.run_algorithm(solucao.astar_new_heuristic, "2_3541687")))
+        self.assertEqual(23, len(sequence))
+
+        #checa valores de nos expandidos
+        #self.assertEqual(23, nos_expandidos)
 
         # nao ha solucao a partir do estado 185423_67
         self.assertIsNone(self.run_algorithm(solucao.astar_new_heuristic, "185423_67"))
