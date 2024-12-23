@@ -22,8 +22,8 @@ def max_move(state, player, max_depth:int, eval_func:Callable, depth:int = 0, al
     best_value = float('-inf')
     best_action = None
     for move in state.legal_moves():
-        sucessor = state.next_state(move)
-        value, _ = min_move(sucessor, player, max_depth, eval_func, depth + 1, alpha, beta)
+        successor = state.next_state(move)
+        value, _ = min_move(successor, player, max_depth, eval_func, depth + 1, alpha, beta)
         if value > best_value:
             best_value = value
             best_action = move
@@ -38,8 +38,8 @@ def min_move(state, player, max_depth:int, eval_func:Callable, depth:int = 0, al
     best_value = float('inf')
     best_action = None
     for move in state.legal_moves():
-        sucessor = state.next_state(move)
-        value, _ = max_move(sucessor, player, max_depth, eval_func, depth + 1, alpha, beta)
+        successor = state.next_state(move)
+        value, _ = max_move(successor, player, max_depth, eval_func, depth + 1, alpha, beta)
         if value < best_value:
             best_value = value
             best_action = move
