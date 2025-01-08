@@ -44,7 +44,6 @@ def monte_carlo_movimento(state, iteracoes=15):
         # Simular as partidas para cada movimento válido
         for mov in movimentos_validos:
             vitorias = 0
-            empates = 0
             # Simular o jogo para esse movimento
             for _ in range(iteracoes):
                 state_copy = state.copy()
@@ -58,13 +57,11 @@ def monte_carlo_movimento(state, iteracoes=15):
                 vencedor = contar_peças(state_copy)
                 if vencedor == jogador_atual:
                     vitorias += 1
-                elif vencedor == 'empate':
-                    empates += 1
 
             taxa_vitoria = vitorias / iteracoes
 
             # Verificar se este movimento tem a maior taxa de vitória
-            if taxa_vitoria > melhor_taxa_vitoria:
+            if taxa_vitoria >= melhor_taxa_vitoria:
                 melhor_taxa_vitoria = taxa_vitoria
                 melhor_movimento = mov
     else:
